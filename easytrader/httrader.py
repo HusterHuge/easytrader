@@ -33,10 +33,10 @@ class HTTrader(WebTrader):
     def __init__(self):
         super().__init__()
         self.account_config = None
+        self.fund_account = None
         self.s = None
 
         self.__set_ip_and_mac()
-        self.fund_account = self.__get_user_name()
 
     def __set_ip_and_mac(self):
         """获取本机IP和MAC地址"""
@@ -49,6 +49,10 @@ class HTTrader(WebTrader):
         # 获取mac地址 link: http://stackoverflow.com/questions/28927958/python-get-mac-address
         self.__mac = ("".join(c + "-" if i % 2 else c for i, c in enumerate(hex(
                 uuid.getnode())[2:].zfill(12)))[:-1]).upper()
+
+    def prepare(self, need_data):
+        super().prepare(need_data)
+        self.fund_account = self.__get_user_name()
 
     def __get_user_name(self):
         # 华泰账户以 08 开头的需移除 fund_account 开头的 0
